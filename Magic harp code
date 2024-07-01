@@ -1,0 +1,34 @@
+const int LDR_PIN1 = A1; // Analog pin connected to the first three-pin LDR module
+const int LDR_PIN2 = A2; // Analog pin connected to the second three-pin LDR module
+const int BUZZER_PIN = 9; // Digital pin connected to buzzer
+const int LASER_PIN = 2; // Digital pin connected to laser diode
+
+void setup() {
+  pinMode(LDR_PIN1, INPUT);
+  pinMode(LDR_PIN2, INPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(LASER_PIN, OUTPUT);
+  
+  digitalWrite(LASER_PIN, HIGH); // Turn on the laser diode
+  Serial.begin(9600);
+}
+
+void loop() {
+  int LDRValue1 = analogRead(LDR_PIN1); // Read the value from the first LDR module
+  int LDRValue2 = analogRead(LDR_PIN2); // Read the value from the second LDR module
+  
+  Serial.print("LDR1: ");
+  Serial.print(LDRValue1);
+  Serial.print(", LDR2: ");
+  Serial.println(LDRValue2);
+
+  if (LDRValue1 < 800) { // Adjust the threshold value for LDR1 as needed
+    tone(BUZZER_PIN, 400); // Play a tone of 400Hz
+  } else if (LDRValue2 < 800) { // Adjust the threshold value for LDR2 as needed
+    tone(BUZZER_PIN, 600); // Play a tone of 600Hz
+  } else {
+    noTone(BUZZER_PIN); // Stop playing tone
+  }
+
+  delay(100); // Small delay to stabilize readings
+}
